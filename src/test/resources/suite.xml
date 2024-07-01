@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Regression Test Suite" parallel="methods" thread-count="1">
+    <listeners>
+        <listener class-name="org.bexio.features.listeners.WebTestsListener"/>
+    </listeners>
+    <test name="Functional API tests">
+        <classes>
+            <class name="UsersTest"/>
+        </classes>
+    </test>
+</suite>

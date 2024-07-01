@@ -1,9 +1,14 @@
 package org.bexio.api.users;
 
+import lombok.Getter;
 import org.bexio.api.base.BaseService;
+import org.bexio.dto.users.request.UsersRequestDto;
+import org.bexio.dto.users.response.CreateUserResponseDto;
 import org.bexio.dto.users.response.UserResponseDto;
 import org.bexio.dto.users.response.UsersResponseDto;
-import lombok.Getter;
+import org.bexio.features.rest.HttpMethod;
+import org.bexio.features.rest.Request;
+import org.bexio.features.rest.RequestSpecificationBuilder;
 import org.bexio.features.rest.Response;
 import org.bexio.features.spring.SpringConfig;
 import org.springframework.context.annotation.Scope;
@@ -14,26 +19,51 @@ import org.springframework.stereotype.Component;
 @Getter
 public class UsersApiService extends BaseService {
 
-  private final String userApiPath = "/api/users/";
-  private final String userApiIdPath = "/api/users/{userId}";
+  private final String USERS_PATH = "/api/users/";
+  private final String USER_ID_PATH = "/api/users/{userId}";
 
-  public UsersRequestBuilder getUsers() {
-    return new UsersRequestBuilder(this, userApiPath);
+  public Response<CreateUserResponseDto> createUser(UsersRequestDto body) {
+    RequestSpecificationBuilder<UsersRequestDto> builder = new RequestSpecificationBuilder<>();
+    Request request =
+        builder
+            .defaultReqSettings(getDefaultSettings())
+            .withBasePath(USERS_PATH)
+            .addJsonContentTypeHeader()
+            .withHttpMethod(HttpMethod.POST)
+            .withBody(body)
+            .build();
+    request.execute();
+
+    return request.responseAs(CreateUserResponseDto.class);
   }
 
-  public UsersRequestBuilder getUser() {
-    return new UsersRequestBuilder(this, userApiIdPath);
+  public Response<UsersResponseDto> getUsers(int pageNumber) {
+    RequestSpecificationBuilder<UsersResponseDto> builder = new RequestSpecificationBuilder<>();
+    Request request =
+        builder
+            .defaultReqSettings(getDefaultSettings())
+            .withBasePath(USERS_PATH)
+            .addJsonContentTypeHeader()
+            .withHttpMethod(HttpMethod.GET)
+            .addQueryParam("page", pageNumber)
+            .build();
+    request.execute();
+
+    return request.responseAs(UsersResponseDto.class);
   }
 
-  public Response<UsersResponseDto> getUsersFromPage(int page) {
-    return getUsers()
-        .withPageNumber(page)
-        .as(UsersResponseDto.class);
-  }
+  public Response<UserResponseDto> getUserById(int id) {
+    RequestSpecificationBuilder<UserResponseDto> builder = new RequestSpecificationBuilder<>();
+    Request request =
+        builder
+            .defaultReqSettings(getDefaultSettings())
+            .withBasePath(USER_ID_PATH)
+            .addJsonContentTypeHeader()
+            .withHttpMethod(HttpMethod.GET)
+            .addPathParameter("userId", id)
+            .build();
+    request.execute();
 
-  public Response<UserResponseDto> getUserById(int userId) {
-    return getUser()
-        .withUserId(userId)
-        .as(UserResponseDto.class);
+    return request.responseAs(UserResponseDto.class);
   }
 }

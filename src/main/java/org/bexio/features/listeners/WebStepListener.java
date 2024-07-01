@@ -21,5 +21,4 @@ public class WebStepListener implements StepLifecycleListener {
   public void beforeStepStop(StepResult result) {
     log.info("Finishing step: " + result.getName() + " and took: " + stopwatch);
   }
-
 }

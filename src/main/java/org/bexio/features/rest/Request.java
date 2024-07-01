@@ -70,7 +70,6 @@ public class Request {
 
   protected void setBaseUri(RequestSpecBuilder builder) {
     String baseUrl = defaultBaseUrlAndAuthSettings.getAllEnvVariables().get("base-api.url");
-    System.out.println("Base URL: " + baseUrl);
     builder.setBaseUri(baseUrl);
   }
 

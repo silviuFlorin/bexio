@@ -101,7 +101,7 @@ public class RequestSpecificationBuilder<TBody> {
     return this;
   }
 
-  public RequestSpecificationBuilder<TBody> withActionToExecute(HttpMethod verb) {
+  public RequestSpecificationBuilder<TBody> withHttpMethod(HttpMethod verb) {
     this.restRequest.setHttpVerb(verb);
     return this;
   }
@@ -119,6 +119,4 @@ public class RequestSpecificationBuilder<TBody> {
   public Request build() {
     return restRequest;
   }
-
-
 }
