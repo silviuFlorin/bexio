@@ -1,0 +1,7 @@
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+base-api:
+  url: ${BASE_API_URL:https://reqres.in/}
